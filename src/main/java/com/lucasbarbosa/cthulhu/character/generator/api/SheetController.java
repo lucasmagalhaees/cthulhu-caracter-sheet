@@ -101,7 +101,8 @@ public class SheetController {
         }));
 
     skills.forEach(
-        attribute -> skillAssignmentVO.stream().sorted(shuffle()).filter(assignment -> isTrue(assignment.getIsUsed()))
+        attribute -> skillAssignmentVO.stream().sorted(shuffle())
+            .filter(assignment -> isTrue(assignment.getIsUsed()))
             .findAny().ifPresent(assignee -> skillsVO.add(AttributeVO.buildAttribute(
                 upperCaseAllFirstCharacter(attribute.getName().replace("_", " ").toLowerCase()),
                 attribute.getInitialValue()))));
@@ -120,7 +121,9 @@ public class SheetController {
             .findAny().map(AttributeVO::getMainValue).orElse(
                 ZERO)));
 
-    SheetVO sheetVO = buildSheet(characteristicsVO,
+    SheetVO sheetVO = buildSheet(characteristicsVO.stream()
+            .sorted(Comparator.comparing(AttributeVO::getMainValue).reversed())
+            .collect(Collectors.toList()),
         skillsVO.stream().sorted(Comparator.comparing(AttributeVO::getMainValue).reversed())
             .collect(Collectors.toList()));
 
