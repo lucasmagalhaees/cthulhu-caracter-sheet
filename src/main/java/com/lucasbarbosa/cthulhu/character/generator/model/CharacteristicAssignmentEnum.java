@@ -1,4 +1,4 @@
-package com.lucasbarbosa.cthulhu.caracter.sheet.model;
+package com.lucasbarbosa.cthulhu.character.generator.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,6 +15,6 @@ public enum CharacteristicAssignmentEnum {
     SEVENTH(50),
     EIGHTH(40);
 
-    private Integer caracteristicValue;
+    private Integer characteristicValue;
 
 }

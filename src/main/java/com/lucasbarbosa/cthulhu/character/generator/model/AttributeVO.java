@@ -1,13 +1,12 @@
-package com.lucasbarbosa.cthulhu.caracter.sheet.model;
+package com.lucasbarbosa.cthulhu.character.generator.model;
 
+import com.lucasbarbosa.cthulhu.character.generator.util.ApplicationUtils;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-
-import static com.lucasbarbosa.cthulhu.caracter.sheet.util.ApplicationUtils.bigDecimalGen;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
@@ -38,10 +37,10 @@ public class AttributeVO {
     }
 
     public BigDecimal getHalfValue() {
-        return mainValue.divide(bigDecimalGen(2), RoundingMode.HALF_UP);
+        return mainValue.divide(ApplicationUtils.bigDecimalGen(2), RoundingMode.HALF_UP);
     }
 
     public BigDecimal getFifthValue() {
-        return mainValue.divide(bigDecimalGen(5), RoundingMode.HALF_UP);
+        return mainValue.divide(ApplicationUtils.bigDecimalGen(5), RoundingMode.HALF_UP);
     }
 }

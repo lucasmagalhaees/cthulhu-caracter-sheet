@@ -1,12 +1,16 @@
-package com.lucasbarbosa.cthulhu.caracter.sheet.util;
+package com.lucasbarbosa.cthulhu.character.generator.util;
 
 import static java.math.BigDecimal.ZERO;
 
-import com.lucasbarbosa.cthulhu.caracter.sheet.model.AttributeVO;
-import com.lucasbarbosa.cthulhu.caracter.sheet.model.CharacteristicEnum;
+import com.lucasbarbosa.cthulhu.character.generator.model.AttributeVO;
+import com.lucasbarbosa.cthulhu.character.generator.model.CharacteristicEnum;
 import java.math.BigDecimal;
+import java.util.Comparator;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.UUID;
 import java.util.regex.Pattern;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -23,6 +27,11 @@ public class ApplicationUtils {
     return Pattern.compile(regex).matcher(text).replaceAll(
         matche -> matche.group(1).toUpperCase() + matche.group(2)
     );
+  }
+
+  public static <T> Comparator<T> shuffle() {
+    final Map<Object, UUID> uniqueIds = new IdentityHashMap<>();
+    return Comparator.comparing(e -> uniqueIds.computeIfAbsent(e, k -> UUID.randomUUID()));
   }
 
   public static Integer calculateRandomAge() {

@@ -1,4 +1,4 @@
-package com.lucasbarbosa.cthulhu.caracter.sheet.driver.config;
+package com.lucasbarbosa.cthulhu.character.generator.driver.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,8 +26,8 @@ public class SwaggerConfig {
 
     private ApiInfo metaData() {
         return new ApiInfoBuilder()
-                .title("CthulhuCaracterSheetGenerator")
-                .description("Project made for randomly generating a Call of Cthulhu Caracter Sheet")
+                .title("Call of Cthulhu Character Generator")
+                .description("Project made for randomly generating a Call of Cthulhu Character Sheet")
                 .version("1.0.0")
                 .license("Apache License Version 2.0")
                 .licenseUrl("https://www.apache.org/licenses/LICENSE-2.0\"")

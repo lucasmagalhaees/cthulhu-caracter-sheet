@@ -1,37 +1,34 @@
-package com.lucasbarbosa.cthulhu.caracter.sheet.api;
+package com.lucasbarbosa.cthulhu.character.generator.api;
 
-import static com.lucasbarbosa.cthulhu.caracter.sheet.model.CharacteristicEnum.DEXTERITY;
-import static com.lucasbarbosa.cthulhu.caracter.sheet.model.CharacteristicEnum.EDUCATION;
-import static com.lucasbarbosa.cthulhu.caracter.sheet.model.CharacteristicEnum.POWER;
-import static com.lucasbarbosa.cthulhu.caracter.sheet.model.SheetVO.buildSheet;
-import static com.lucasbarbosa.cthulhu.caracter.sheet.model.SkillEnum.CREDIT_RATING;
-import static com.lucasbarbosa.cthulhu.caracter.sheet.model.SkillEnum.DODGE;
-import static com.lucasbarbosa.cthulhu.caracter.sheet.model.SkillEnum.NATIVE_LANGUAGE;
-import static com.lucasbarbosa.cthulhu.caracter.sheet.util.ApplicationUtils.bigDecimalGen;
-import static com.lucasbarbosa.cthulhu.caracter.sheet.util.ApplicationUtils.rollDice;
-import static com.lucasbarbosa.cthulhu.caracter.sheet.util.ApplicationUtils.upperCaseAllFirstCharacter;
+import static com.lucasbarbosa.cthulhu.character.generator.model.CharacteristicEnum.DEXTERITY;
+import static com.lucasbarbosa.cthulhu.character.generator.model.CharacteristicEnum.EDUCATION;
+import static com.lucasbarbosa.cthulhu.character.generator.model.CharacteristicEnum.POWER;
+import static com.lucasbarbosa.cthulhu.character.generator.model.SheetVO.buildSheet;
+import static com.lucasbarbosa.cthulhu.character.generator.model.SkillEnum.CREDIT_RATING;
+import static com.lucasbarbosa.cthulhu.character.generator.model.SkillEnum.DODGE;
+import static com.lucasbarbosa.cthulhu.character.generator.model.SkillEnum.NATIVE_LANGUAGE;
+import static com.lucasbarbosa.cthulhu.character.generator.util.ApplicationUtils.bigDecimalGen;
+import static com.lucasbarbosa.cthulhu.character.generator.util.ApplicationUtils.rollDice;
+import static com.lucasbarbosa.cthulhu.character.generator.util.ApplicationUtils.shuffle;
+import static com.lucasbarbosa.cthulhu.character.generator.util.ApplicationUtils.upperCaseAllFirstCharacter;
 import static java.math.BigDecimal.ZERO;
 import static org.apache.commons.lang3.BooleanUtils.isFalse;
 import static org.apache.commons.lang3.BooleanUtils.isTrue;
 
-import com.lucasbarbosa.cthulhu.caracter.sheet.model.AssignmentVO;
-import com.lucasbarbosa.cthulhu.caracter.sheet.model.AttributeVO;
-import com.lucasbarbosa.cthulhu.caracter.sheet.model.CharacteristicAssignmentEnum;
-import com.lucasbarbosa.cthulhu.caracter.sheet.model.CharacteristicEnum;
-import com.lucasbarbosa.cthulhu.caracter.sheet.model.SheetVO;
-import com.lucasbarbosa.cthulhu.caracter.sheet.model.SkillAssignmentEnum;
-import com.lucasbarbosa.cthulhu.caracter.sheet.model.SkillEnum;
-import com.lucasbarbosa.cthulhu.caracter.sheet.model.SkillVO;
-import com.lucasbarbosa.cthulhu.caracter.sheet.util.ApplicationUtils;
+import com.lucasbarbosa.cthulhu.character.generator.model.AssignmentVO;
+import com.lucasbarbosa.cthulhu.character.generator.model.AttributeVO;
+import com.lucasbarbosa.cthulhu.character.generator.model.CharacteristicAssignmentEnum;
+import com.lucasbarbosa.cthulhu.character.generator.model.CharacteristicEnum;
+import com.lucasbarbosa.cthulhu.character.generator.model.SheetVO;
+import com.lucasbarbosa.cthulhu.character.generator.model.SkillAssignmentEnum;
+import com.lucasbarbosa.cthulhu.character.generator.model.SkillEnum;
+import com.lucasbarbosa.cthulhu.character.generator.model.SkillVO;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,15 +41,18 @@ public class SheetController {
 
   @GetMapping
   public ResponseEntity<SheetVO> getSheet() {
-    var caracteristics = Arrays.stream(CharacteristicEnum.values()).map(Enum::name)
+    var characteristics = Arrays.stream(CharacteristicEnum.values()).map(Enum::name)
+        .sorted(shuffle())
         .collect(Collectors.toList());
     List<AttributeVO> characteristicsVO = new ArrayList<>();
-    Collections.shuffle(caracteristics);
     var attributeAssignmentVO = Arrays.stream(CharacteristicAssignmentEnum.values())
         .map(characteristicAssignment
             -> AssignmentVO.buildAssignment(characteristicAssignment.name(),
-            characteristicAssignment.getCaracteristicValue())).collect(Collectors.toList());
-    caracteristics.forEach(attribute -> attributeAssignmentVO.stream()
+            characteristicAssignment.getCharacteristicValue()))
+        .sorted(shuffle())
+        .collect(Collectors.toList());
+    characteristics.forEach(attribute -> attributeAssignmentVO.stream()
+        .sorted(shuffle())
         .filter(assignment -> isFalse(assignment.getIsUsed())).findAny().ifPresent(assignee -> {
               characteristicsVO.add(
                   AttributeVO.buildAttribute(StringUtils.capitalize(attribute.toLowerCase()),
@@ -75,11 +75,12 @@ public class SheetController {
     var skills = Arrays.stream(SkillEnum.values())
         .filter(this::hasInitialValue)
         .map(element -> SkillVO.buildSkill(element.name(), element.getInitialValue()))
+        .sorted(shuffle())
         .collect(Collectors.toList());
     List<AttributeVO> skillsVO = new ArrayList<>();
-    Collections.shuffle(skills);
     var skillAssignmentVO = Arrays.stream(SkillAssignmentEnum.values()).map(skillAssignment
             -> AssignmentVO.buildAssignment(skillAssignment.name(), skillAssignment.getSkillValue()))
+        .sorted(shuffle())
         .collect(Collectors.toList());
 
     skillAssignmentVO.stream()
@@ -91,6 +92,7 @@ public class SheetController {
         });
 
     skills.forEach(attribute -> skillAssignmentVO.stream()
+        .sorted(shuffle())
         .filter(assignment -> isFalse(assignment.getIsUsed())).findAny().ifPresent(assignee -> {
           skillsVO.add(AttributeVO.buildAttribute(
               upperCaseAllFirstCharacter(attribute.getName().replace("_", " ").toLowerCase()),
@@ -99,7 +101,7 @@ public class SheetController {
         }));
 
     skills.forEach(
-        attribute -> skillAssignmentVO.stream().filter(assignment -> isTrue(assignment.getIsUsed()))
+        attribute -> skillAssignmentVO.stream().sorted(shuffle()).filter(assignment -> isTrue(assignment.getIsUsed()))
             .findAny().ifPresent(assignee -> skillsVO.add(AttributeVO.buildAttribute(
                 upperCaseAllFirstCharacter(attribute.getName().replace("_", " ").toLowerCase()),
                 attribute.getInitialValue()))));

@@ -1,2 +1,2 @@
-# cthulhu-caracter-sheet
-Project made for randomly generating a Call of Cthulhu Caracter Sheet
+#cthulhu.character.generator
+Project made for randomly generating a Call of Cthulhu Character Sheet

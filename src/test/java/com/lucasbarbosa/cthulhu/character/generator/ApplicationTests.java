@@ -1,4 +1,4 @@
-package com.lucasbarbosa.cthulhu.caracter.sheet;
+package com.lucasbarbosa.cthulhu.character.generator;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

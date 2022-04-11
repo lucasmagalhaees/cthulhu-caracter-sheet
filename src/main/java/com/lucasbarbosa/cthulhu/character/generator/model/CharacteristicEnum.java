@@ -1,4 +1,4 @@
-package com.lucasbarbosa.cthulhu.caracter.sheet.model;
+package com.lucasbarbosa.cthulhu.character.generator.model;
 
 public enum CharacteristicEnum {
 
