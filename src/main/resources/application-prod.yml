@@ -1,0 +1,8 @@
+server:
+  port: $PORT
+  servlet:
+    context-path: /caracter-generator
+spring:
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher
