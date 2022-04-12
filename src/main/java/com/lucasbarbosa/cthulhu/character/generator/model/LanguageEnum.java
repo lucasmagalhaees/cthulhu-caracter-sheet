@@ -14,7 +14,7 @@ public enum LanguageEnum {
   ENGLISH(true),
   FRENCH(true),
   GERMAN(true),
-  LATIN(false),
+  AFRICANER(true),
   GREEK(true),
   JAPANESE(true),
   MANDARIN(true),
@@ -25,9 +25,12 @@ public enum LanguageEnum {
   YORUBA(false),
   NAVAJO(false),
   NORSE(false),
+  HINDI(false),
   BABILONIC(false),
+  LATIN(false),
   HEBREW(false),
   PERSIAN(false),
+  MONGOL(false),
   ARAMAIC(false);
 
   private Boolean isNative;

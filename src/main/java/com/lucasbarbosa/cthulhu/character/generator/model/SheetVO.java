@@ -11,6 +11,7 @@ import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import lombok.Builder;
 import lombok.Getter;
@@ -90,7 +91,7 @@ public class SheetVO {
 
     languagesAvailable.stream()
         .sorted(shuffle())
-        .filter(element -> BigDecimal.ZERO.equals(element.getValue()))
+        .filter(SheetVO::isNative)
         .filter(assignment -> isFalse(assignment.getIsUsed())).findAny().ifPresent(assignee -> {
           sheetVO.setNativeLanguage(capitalize(assignee.getName().toLowerCase()));
           assignee.setIsUsed(true);
@@ -98,11 +99,16 @@ public class SheetVO {
 
     languagesAvailable.stream()
         .sorted(shuffle())
+        .filter(Predicate.not(SheetVO::isNative))
         .filter(assignment -> isFalse(assignment.getIsUsed())).findAny().ifPresent(assignee -> {
           sheetVO.setForeignLanguage(capitalize(assignee.getName().toLowerCase()));
           assignee.setIsUsed(true);
         });
 
     return sheetVO;
+  }
+
+  private static boolean isNative(AssignmentVO element) {
+    return BigDecimal.ZERO.equals(element.getValue());
   }
 }
