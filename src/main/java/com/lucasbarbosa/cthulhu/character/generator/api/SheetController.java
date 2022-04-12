@@ -12,8 +12,8 @@ import static com.lucasbarbosa.cthulhu.character.generator.util.ApplicationUtils
 import static com.lucasbarbosa.cthulhu.character.generator.util.ApplicationUtils.shuffle;
 import static com.lucasbarbosa.cthulhu.character.generator.util.ApplicationUtils.upperCaseAllFirstCharacter;
 import static java.math.BigDecimal.ZERO;
+import static java.util.Comparator.comparing;
 import static org.apache.commons.lang3.BooleanUtils.isFalse;
-import static org.apache.commons.lang3.BooleanUtils.isTrue;
 
 import com.lucasbarbosa.cthulhu.character.generator.model.AssignmentVO;
 import com.lucasbarbosa.cthulhu.character.generator.model.AttributeVO;
@@ -28,6 +28,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.ResponseEntity;
@@ -53,11 +55,11 @@ public class SheetController {
         .collect(Collectors.toList());
     characteristics.forEach(attribute -> attributeAssignmentVO.stream()
         .sorted(shuffle())
-        .filter(assignment -> isFalse(assignment.getIsUsed())).findAny().ifPresent(assignee -> {
+        .filter(Predicate.not(AssignmentVO::isUsed)).findAny().ifPresent(assignee -> {
               characteristicsVO.add(
                   AttributeVO.buildAttribute(StringUtils.capitalize(attribute.toLowerCase()),
                       assignee.getValue()));
-              assignee.setIsUsed(true);
+              assignee.setUsed(true);
             }
         ));
     characteristicsVO.add(
@@ -84,51 +86,57 @@ public class SheetController {
         .collect(Collectors.toList());
 
     skillAssignmentVO.stream()
-        .filter(assignment -> isFalse(assignment.getIsUsed())).findAny().ifPresent(assignee -> {
+        .filter(Predicate.not(AssignmentVO::isUsed)).findAny().ifPresent(assignee -> {
           skillsVO.add(AttributeVO.buildAttribute(
               upperCaseAllFirstCharacter(CREDIT_RATING.name().replace("_", " ").toLowerCase()),
               assignee.getValue()));
-          assignee.setIsUsed(true);
+          assignee.setUsed(true);
         });
 
     skills.forEach(attribute -> skillAssignmentVO.stream()
         .sorted(shuffle())
-        .filter(assignment -> isFalse(assignment.getIsUsed())).findAny().ifPresent(assignee -> {
-          skillsVO.add(AttributeVO.buildAttribute(
-              upperCaseAllFirstCharacter(attribute.getName().replace("_", " ").toLowerCase()),
-              attribute.getInitialValue().add(assignee.getValue())));
-          assignee.setIsUsed(true);
-        }));
+        .filter(Predicate.not(AssignmentVO::isUsed)).findAny().ifPresentOrElse(assignee -> {
+          addSkillAttribute(skillsVO, attribute, assignee.getValue());
+          assignee.setUsed(true);
+        }, () -> addSkillAttribute(skillsVO, attribute, ZERO)));
 
-    skills.forEach(
-        attribute -> skillAssignmentVO.stream().sorted(shuffle())
-            .filter(assignment -> isTrue(assignment.getIsUsed()))
-            .findAny().ifPresent(assignee -> skillsVO.add(AttributeVO.buildAttribute(
-                upperCaseAllFirstCharacter(attribute.getName().replace("_", " ").toLowerCase()),
-                attribute.getInitialValue()))));
-
-    skillsVO.add(AttributeVO.buildAttribute(
-        upperCaseAllFirstCharacter(DODGE.name().replace("_", " ").toLowerCase()),
-        characteristicsVO.stream()
-            .filter(element -> DEXTERITY.name().equalsIgnoreCase(element.getAttributeName()))
-            .findAny().map(AttributeVO::getHalfValue).orElse(
-                ZERO)));
-
-    skillsVO.add(AttributeVO.buildAttribute(
-        upperCaseAllFirstCharacter(NATIVE_LANGUAGE.name().replace("_", " ").toLowerCase()),
-        characteristicsVO.stream()
-            .filter(element -> EDUCATION.name().equalsIgnoreCase(element.getAttributeName()))
-            .findAny().map(AttributeVO::getMainValue).orElse(
-                ZERO)));
+    buildSkillFromCharacteristic(characteristicsVO, skillsVO, DODGE, DEXTERITY,
+        AttributeVO::getHalfValue);
+    buildSkillFromCharacteristic(characteristicsVO, skillsVO, NATIVE_LANGUAGE, EDUCATION,
+        AttributeVO::getMainValue);
 
     SheetVO sheetVO = buildSheet(characteristicsVO.stream()
-            .sorted(Comparator.comparing(AttributeVO::getMainValue).reversed())
+            .sorted(attributeComparatorFactory(AttributeVO::getMainValue))
             .collect(Collectors.toList()),
-        skillsVO.stream().sorted(Comparator.comparing(AttributeVO::getMainValue).reversed())
+        skillsVO.stream().sorted(attributeComparatorFactory(AttributeVO::getMainValue))
             .collect(Collectors.toList()));
 
     return ResponseEntity.ok(sheetVO);
 
+  }
+
+  private void addSkillAttribute(List<AttributeVO> skillsVO, SkillVO attribute,
+      BigDecimal modificator) {
+    skillsVO.add(AttributeVO.buildAttribute(
+        upperCaseAllFirstCharacter(attribute.getName().replace("_", " ").toLowerCase()),
+        attribute.getInitialValue().add(modificator)));
+  }
+
+  private Comparator<AttributeVO> attributeComparatorFactory(
+      Function<AttributeVO, BigDecimal> comparatorParam) {
+    return comparing(comparatorParam).reversed();
+  }
+
+  private void buildSkillFromCharacteristic(List<AttributeVO> characteristicsVO,
+      List<AttributeVO> skillsVO, SkillEnum skillEnum, CharacteristicEnum characteristicEnum,
+      Function<AttributeVO, BigDecimal> converter) {
+    skillsVO.add(AttributeVO.buildAttribute(
+        upperCaseAllFirstCharacter(skillEnum.name().replace("_", " ").toLowerCase()),
+        characteristicsVO.stream()
+            .filter(
+                element -> characteristicEnum.name().equalsIgnoreCase(element.getAttributeName()))
+            .findAny().map(converter).orElse(
+                ZERO)));
   }
 
   private boolean hasInitialValue(SkillEnum value) {

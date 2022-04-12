@@ -1,24 +1,28 @@
 package com.lucasbarbosa.cthulhu.character.generator.model;
 
+import java.math.BigDecimal;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
-@Getter
 public class AssignmentVO {
 
-    private String name;
-    private BigDecimal value;
+  @Getter
+  private String name;
+  @Getter
+  private BigDecimal value;
 
-    @Setter
-    private Boolean isUsed;
+  @Setter
+  private Boolean used;
 
-    public static AssignmentVO buildAssignment(String name, Integer number) {
-        return new AssignmentVO(name, new BigDecimal(number), false);
-    }
+  public Boolean isUsed() {
+    return used;
+  }
+
+  public static AssignmentVO buildAssignment(String name, Integer number) {
+    return new AssignmentVO(name, new BigDecimal(number), false);
+  }
 
 }
