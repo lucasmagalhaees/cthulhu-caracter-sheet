@@ -18,7 +18,7 @@ stages {
        stage("Docker Run"){
       steps {
         echo 'Starting docker run'
-        sh "docker run --name cthulhuContainer -p 9400:9200 -d cthulhu-docker"
+        sh "docker run --rm -d --name cthulhuContainer -p 9400:9200 cthulhu-docker"
           }
         }
 }
