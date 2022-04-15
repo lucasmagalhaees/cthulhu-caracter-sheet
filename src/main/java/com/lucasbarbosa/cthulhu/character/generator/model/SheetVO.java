@@ -92,17 +92,17 @@ public class SheetVO {
     languagesAvailable.stream()
         .sorted(shuffle())
         .filter(SheetVO::isNative)
-        .filter(assignment -> isFalse(assignment.getIsUsed())).findAny().ifPresent(assignee -> {
+        .filter(assignment -> isFalse(assignment.isUsed())).findAny().ifPresent(assignee -> {
           sheetVO.setNativeLanguage(capitalize(assignee.getName().toLowerCase()));
-          assignee.setIsUsed(true);
+          assignee.setUsed(true);
         });
 
     languagesAvailable.stream()
         .sorted(shuffle())
         .filter(Predicate.not(SheetVO::isNative))
-        .filter(assignment -> isFalse(assignment.getIsUsed())).findAny().ifPresent(assignee -> {
+        .filter(assignment -> isFalse(assignment.isUsed())).findAny().ifPresent(assignee -> {
           sheetVO.setForeignLanguage(capitalize(assignee.getName().toLowerCase()));
-          assignee.setIsUsed(true);
+          assignee.setUsed(true);
         });
 
     return sheetVO;

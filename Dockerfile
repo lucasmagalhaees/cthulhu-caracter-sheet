@@ -1,22 +1,10 @@
 # Compile and build the project
 FROM gradle:jdk11 as build-image
-
-VOLUME /tmp
-WORKDIR /
-ADD . .
-
-
-RUN gradle --stacktrace clean test build
-COPY build/libs/*.jar app.jar
+RUN mkdir -p /app
+COPY . /app
+WORKDIR /app
+RUN gradle --stacktrace --no-daemon clean build
 
 FROM openjdk:11
-
-#
-# Copy the jar file in and name it app.jar.
-#
-COPY --from=build-image app.jar /
-
-#
-# The command to run when the container starts.
-#
+COPY --from=build-image /app/build/libs/*.jar /app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
