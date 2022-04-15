@@ -4,7 +4,7 @@ agent any
 stages {
     stage("Compile"){
       steps {
-        sh "./gradlew clean build"
+        sh "chmod +x ./gradlew clean build"
       }
     }
 }
