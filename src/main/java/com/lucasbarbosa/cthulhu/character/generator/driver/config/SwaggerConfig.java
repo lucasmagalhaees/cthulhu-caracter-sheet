@@ -26,7 +26,7 @@ public class SwaggerConfig {
 
     private ApiInfo metaData() {
         return new ApiInfoBuilder()
-                .title("Call of Cthulhu Random Sheet Generator 3")
+                .title("Call of Cthulhu Random Char Generator")
                 .description("Project made for randomly generating a Call of Cthulhu Character Sheet")
                 .version("1.0.0")
                 .license("Apache License Version 2.0")
