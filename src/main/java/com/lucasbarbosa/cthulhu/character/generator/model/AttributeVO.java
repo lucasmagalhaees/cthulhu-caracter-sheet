@@ -37,11 +37,11 @@ public class AttributeVO {
   }
 
   public BigDecimal getHalfValue() {
-    return mainValue.divide(ApplicationUtils.bigDecimalGen(0), RoundingMode.DOWN);
+    return mainValue.divide(ApplicationUtils.bigDecimalGen(2), 0, RoundingMode.DOWN);
   }
 
   public BigDecimal getFifthValue() {
-    return mainValue.divide(ApplicationUtils.bigDecimalGen(0), RoundingMode.DOWN);
+    return mainValue.divide(ApplicationUtils.bigDecimalGen(5), 0, RoundingMode.DOWN);
   }
 
 }
