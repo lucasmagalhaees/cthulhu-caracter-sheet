@@ -6,5 +6,5 @@ WORKDIR /app
 RUN gradle --stacktrace --no-daemon clean build
 
 FROM openjdk:11
-COPY --from=build-image /app/build/libs/*.jar /app.jar
+COPY --from=build-image /app/build/libs/cthulhu.character.generator.jar /app.jar
 ENTRYPOINT ["java", "-jar", "app.jar"]
