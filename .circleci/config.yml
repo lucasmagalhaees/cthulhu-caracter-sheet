@@ -3,10 +3,7 @@ version: 2.1
 workflows:
   build-deploy:
     jobs:
-      - build-deploy:
-          filter:
-            branches:
-              only: master
+      - build-deploy
 
 jobs:
   build-deploy:
