@@ -23,6 +23,8 @@ import com.lucasbarbosa.cthulhu.character.generator.model.SheetVO;
 import com.lucasbarbosa.cthulhu.character.generator.model.SkillAssignmentEnum;
 import com.lucasbarbosa.cthulhu.character.generator.model.SkillEnum;
 import com.lucasbarbosa.cthulhu.character.generator.model.SkillVO;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,6 +34,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,10 +42,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/sheet")
-public class SheetController {
+@Api(tags = "Character Creation")
+public class CharacterController {
 
-  @GetMapping
-  public ResponseEntity<SheetVO> getSheet() {
+  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+  @ApiOperation(value = "Resource responsible for ramdomly generating a character")
+  public ResponseEntity<SheetVO> getChar() {
     var characteristics = Arrays.stream(CharacteristicEnum.values()).map(Enum::name)
         .sorted(shuffle())
         .collect(Collectors.toList());
