@@ -4,6 +4,9 @@ workflows:
   build-deploy:
     jobs:
       - build-deploy
+      filter:
+        branches:
+          only: master
 
 jobs:
   build-deploy:
