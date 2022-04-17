@@ -1,0 +1,7 @@
+version: '3.7'
+services:
+  cthulhuservice:
+    build: .
+    container_name: cthulhu-docker
+    ports:
+      - "9400:9200"
