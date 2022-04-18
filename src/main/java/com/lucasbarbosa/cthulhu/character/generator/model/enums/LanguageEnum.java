@@ -1,4 +1,4 @@
-package com.lucasbarbosa.cthulhu.character.generator.model;
+package com.lucasbarbosa.cthulhu.character.generator.model.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,7 +30,6 @@ public enum LanguageEnum {
   LATIN(false),
   HEBREW(false),
   PERSIAN(false),
-  MONGOL(false),
   ARAMAIC(false);
 
   private Boolean isNative;

@@ -14,23 +14,23 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SwaggerConfig {
 
-    @Bean
-    public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("com.lucasbarbosa"))
-                .paths(PathSelectors.any())
-                .build()
-                .apiInfo(metaData());
-    }
+  @Bean
+  public Docket api() {
+    return new Docket(DocumentationType.SWAGGER_2)
+        .select()
+        .apis(RequestHandlerSelectors.basePackage("com.lucasbarbosa"))
+        .paths(PathSelectors.any())
+        .build()
+        .apiInfo(metaData());
+  }
 
-    private ApiInfo metaData() {
-        return new ApiInfoBuilder()
-                .title("Call of Cthulhu Random Char Generator")
-                .description("Project made for randomly generating a Call of Cthulhu Character Sheet")
-                .version("1.0.0")
-                .license("Apache License Version 2.0")
-                .licenseUrl("https://www.apache.org/licenses/LICENSE-2.0\"")
-                .build();
-    }
+  private ApiInfo metaData() {
+    return new ApiInfoBuilder()
+        .title("Call of Cthulhu Random Character Generator")
+        .description("Project made for randomly generating a Call of Cthulhu Character")
+        .version("1.0.0")
+        .license("Apache License Version 2.0")
+        .licenseUrl("https://www.apache.org/licenses/LICENSE-2.0\"")
+        .build();
+  }
 }

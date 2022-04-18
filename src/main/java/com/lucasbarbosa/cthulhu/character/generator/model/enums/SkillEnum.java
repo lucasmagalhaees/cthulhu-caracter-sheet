@@ -1,4 +1,4 @@
-package com.lucasbarbosa.cthulhu.character.generator.model;
+package com.lucasbarbosa.cthulhu.character.generator.model.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

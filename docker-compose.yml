@@ -3,5 +3,6 @@ services:
   cthulhuservice:
     build: .
     container_name: cthulhu-docker
+    restart: always
     ports:
       - "9400:9200"

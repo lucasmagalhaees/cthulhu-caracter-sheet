@@ -1,6 +1,6 @@
-package com.lucasbarbosa.cthulhu.character.generator.model;
+package com.lucasbarbosa.cthulhu.character.generator.model.enums;
 
-public enum CharacteristicEnum {
+public enum MainCharacteristicEnum {
 
   STRENGTH,
   CONSTITUTION,

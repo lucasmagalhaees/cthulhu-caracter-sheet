@@ -1,11 +1,11 @@
-package com.lucasbarbosa.cthulhu.character.generator.model;
+package com.lucasbarbosa.cthulhu.character.generator.model.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @AllArgsConstructor
 @Getter
-public enum BonusEnum {
+public enum BonusDamageEnum {
   FIRST(2, 64, -2, -2, 0, 0, 0, true),
   SECOND(65, 84, -1, -1, 0, 0, 0, true),
   THIRD(85, 124, 0, 0, 0, 0, 0, true),
