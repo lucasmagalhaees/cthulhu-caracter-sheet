@@ -5,6 +5,7 @@ import static java.math.BigDecimal.ZERO;
 import com.lucasbarbosa.cthulhu.character.generator.model.AttributeVO;
 import com.lucasbarbosa.cthulhu.character.generator.model.enums.MainCharacteristicEnum;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.IdentityHashMap;
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -32,6 +34,20 @@ public class ApplicationUtils {
     return Pattern.compile(regex).matcher(text.replace(UNDERSCORE, BLANK).toLowerCase()).replaceAll(
         matche -> matche.group(1).toUpperCase() + matche.group(2)
     );
+
+  }
+
+  public static List<List<AttributeVO>> split(List<AttributeVO> list)
+  {
+    int midIndex
+        = ((list.size() / 2)
+        - (((list.size() % 2) > 0) ? 0 : 1));
+
+    return new ArrayList<>(
+        list.stream()
+            .collect(Collectors.partitioningBy(
+                s -> list.indexOf(s) > midIndex))
+            .values());
 
   }
 
