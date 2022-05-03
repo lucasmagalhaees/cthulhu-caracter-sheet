@@ -5,6 +5,6 @@ services:
     container_name: cthulhu-docker
     restart: always
     environment:
-      PROFILE: stage
+      PROFILE: ${PROFILE}
     ports:
       - "9400:9200"
