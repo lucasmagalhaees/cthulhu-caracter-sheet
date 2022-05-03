@@ -10,7 +10,8 @@ workflows:
 
 jobs:
   build-deploy:
-    image: ubuntu-2004:202201-02
+    machine:
+      image: ubuntu-2004:202201-02
     steps:
       - checkout
       - run:
