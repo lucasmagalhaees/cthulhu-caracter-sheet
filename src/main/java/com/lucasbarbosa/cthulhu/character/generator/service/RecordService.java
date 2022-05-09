@@ -3,7 +3,7 @@ package com.lucasbarbosa.cthulhu.character.generator.service;
 import static com.lucasbarbosa.cthulhu.character.generator.model.RecordVO.mountRecord;
 import static com.lucasbarbosa.cthulhu.character.generator.model.enums.MainCharacteristicEnum.SIZE;
 import static com.lucasbarbosa.cthulhu.character.generator.model.enums.MainCharacteristicEnum.STRENGTH;
-import static com.lucasbarbosa.cthulhu.character.generator.util.ApplicationUtils.calculateRandomAge;
+import static com.lucasbarbosa.cthulhu.character.generator.driver.util.ApplicationUtils.calculateRandomAge;
 
 import com.lucasbarbosa.cthulhu.character.generator.model.AttributeVO;
 import com.lucasbarbosa.cthulhu.character.generator.model.RecordVO;
@@ -14,7 +14,8 @@ import java.util.Map;
 
 public interface RecordService {
 
-  default RecordVO buildRecord(List<AttributeVO> characterists, List<AttributeVO> skills) {
+  default RecordVO buildRecord(List<AttributeVO> characterists, List<AttributeVO> skills,
+      String nativeLanguageRegion, String foreignLanguageRegion) {
     Map<MainCharacteristicEnum, BigDecimal> coreStats = buildCoreStats(
         characterists);
 
@@ -28,7 +29,7 @@ public interface RecordService {
 
     recordVO.setAge(calculateRandomAge());
 
-    assignCharacterLanguages(recordVO);
+    assignCharacterLanguages(recordVO, nativeLanguageRegion, foreignLanguageRegion);
 
     return recordVO;
   }
@@ -39,7 +40,8 @@ public interface RecordService {
   void evaluateMagicPoints(Map<MainCharacteristicEnum, BigDecimal> coreStats,
       RecordVO recordVO);
 
-  void assignCharacterLanguages(RecordVO recordVO);
+  void assignCharacterLanguages(RecordVO recordVO, String nativeLanguageRegion,
+      String foreignLanguageRegion);
 
   void assignBonusDamage(RecordVO recordVO, BigDecimal bonusParam);
 

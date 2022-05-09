@@ -1,6 +1,6 @@
 package com.lucasbarbosa.cthulhu.character.generator.model;
 
-import com.lucasbarbosa.cthulhu.character.generator.util.ApplicationUtils;
+import com.lucasbarbosa.cthulhu.character.generator.driver.util.ApplicationUtils;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import lombok.AccessLevel;
