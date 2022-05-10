@@ -7,8 +7,7 @@ import lombok.Getter;
 @Getter
 public enum RegionEnum {
 
-  SOUTH_AMERICA,
-  NORTH_AMERICA,
+  AMERICA,
   EASTERN_EUROPE,
   WESTERN_EUROPE,
   MIDDLE_EAST,

@@ -46,7 +46,6 @@ public class CharacterServiceImpl implements CharacterService {
   public void assignSkills(List<SkillVO> skills, List<AttributeVO> skillsVO,
       List<AssignmentVO> skillAssignmentVO) {
     skills.forEach(attribute -> skillAssignmentVO.stream()
-        .sorted(shuffle())
         .filter(Predicate.not(AssignmentVO::isUsed)).findAny().ifPresentOrElse(assignee -> {
           addSkillAttribute(skillsVO, attribute, assignee.getValue());
           assignee.setUsed(true);
@@ -121,7 +120,6 @@ public class CharacterServiceImpl implements CharacterService {
     var stereotypeSkills = findSkills(stereotype).stream()
         .map(skillAssignment
             -> SkillVO.buildSkill(skillAssignment.name(), skillAssignment.getInitialValue()))
-        .sorted(shuffle())
         .collect(Collectors.toList());
     assignSkills(stereotypeSkills, attributeVO, skillAssignmentVO);
   }
@@ -130,7 +128,6 @@ public class CharacterServiceImpl implements CharacterService {
   public List<AssignmentVO> translateSkillAssignment() {
     return Arrays.stream(SkillAssignmentEnum.values()).map(skillAssignment
             -> AssignmentVO.buildAssignment(skillAssignment.name(), skillAssignment.getSkillValue()))
-        .sorted(shuffle())
         .collect(Collectors.toList());
   }
 

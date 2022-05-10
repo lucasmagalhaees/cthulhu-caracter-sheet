@@ -17,6 +17,7 @@ import com.lucasbarbosa.cthulhu.character.generator.model.enums.StereotypeEnum;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -34,11 +35,9 @@ public interface CharacterService {
             characteristicAssignment.getCharacteristicValue()))
         .collect(Collectors.toList());
     var stereoTypeCharacteristics = StereotypeEnum.findChars(stereotype).stream().map(Enum::name)
-        .sorted(shuffle())
         .collect(Collectors.toList());
     assignCoreCharacterics(stereoTypeCharacteristics, attributeAssignmentVO, characteristicsVO);
     var characteristics = Arrays.stream(MainCharacteristicEnum.values()).map(Enum::name)
-        .sorted(shuffle())
         .collect(Collectors.toList());
     assignCoreCharacterics(characteristics, attributeAssignmentVO, characteristicsVO);
     assignLuck(characteristicsVO);
@@ -48,7 +47,7 @@ public interface CharacterService {
     List<AttributeVO> attributeVO = new ArrayList<>();
     List<AssignmentVO> skillAssignmentVO = translateSkillAssignment();
 
-    assignCreditRating(attributeVO, skillAssignmentVO);
+//    assignCreditRating(attributeVO, skillAssignmentVO);
     assignStereotypeSkills(attributeVO, stereotype, skillAssignmentVO);
 
     assignSkills(skillVO, attributeVO, skillAssignmentVO);
