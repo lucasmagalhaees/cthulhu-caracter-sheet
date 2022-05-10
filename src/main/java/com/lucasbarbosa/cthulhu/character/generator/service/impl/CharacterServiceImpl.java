@@ -1,6 +1,7 @@
 package com.lucasbarbosa.cthulhu.character.generator.service.impl;
 
 import static com.lucasbarbosa.cthulhu.character.generator.driver.util.ApplicationUtils.bigDecimalGen;
+import static com.lucasbarbosa.cthulhu.character.generator.driver.util.ApplicationUtils.calculateRandom;
 import static com.lucasbarbosa.cthulhu.character.generator.driver.util.ApplicationUtils.formatAttributeName;
 import static com.lucasbarbosa.cthulhu.character.generator.driver.util.ApplicationUtils.rollDice;
 import static com.lucasbarbosa.cthulhu.character.generator.driver.util.ApplicationUtils.shuffle;
@@ -17,6 +18,7 @@ import com.lucasbarbosa.cthulhu.character.generator.model.AssignmentVO;
 import com.lucasbarbosa.cthulhu.character.generator.model.AttributeVO;
 import com.lucasbarbosa.cthulhu.character.generator.model.RecordVO;
 import com.lucasbarbosa.cthulhu.character.generator.model.SkillVO;
+import com.lucasbarbosa.cthulhu.character.generator.model.enums.CreditRatingEnum;
 import com.lucasbarbosa.cthulhu.character.generator.model.enums.MainCharacteristicEnum;
 import com.lucasbarbosa.cthulhu.character.generator.model.enums.SkillAssignmentEnum;
 import com.lucasbarbosa.cthulhu.character.generator.model.enums.SkillEnum;
@@ -54,14 +56,14 @@ public class CharacterServiceImpl implements CharacterService {
   }
 
   @Override
-  public void assignCreditRating(List<AttributeVO> skillsVO, List<AssignmentVO> skillAssignmentVO) {
-    skillAssignmentVO.stream()
-        .filter(Predicate.not(AssignmentVO::isUsed)).findAny().ifPresent(assignee -> {
-          skillsVO.add(AttributeVO.buildAttribute(
-              formatAttributeName(CREDIT_RATING.name()),
-              assignee.getValue()));
-          assignee.setUsed(true);
-        });
+  public void assignCreditRating(List<AttributeVO> skillsVO) {
+    Arrays.stream(CreditRatingEnum.values()).sorted(shuffle())
+        .findAny().ifPresent(credit ->
+            skillsVO.add(AttributeVO.buildAttribute(
+                formatAttributeName(CREDIT_RATING.name()),
+                bigDecimalGen(calculateRandom(credit.getMaxValue(), credit.getMinValue())))));
+
+
   }
 
   @Override

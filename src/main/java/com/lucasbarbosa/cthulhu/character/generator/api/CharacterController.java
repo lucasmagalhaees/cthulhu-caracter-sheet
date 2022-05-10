@@ -43,13 +43,22 @@ public class CharacterController {
         .body(characterService.build(stereotype, nativeLanguageRegion, foreignLanguageRegion));
   }
 
-  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, value = "/region")
-  @ApiOperation(value = "Resource responsible for providing available regions")
-  public ResponseEntity<List<StereotypeVO>> getRegion(
+  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, value = "/region/native")
+  @ApiOperation(value = "Resource responsible for providing available native regions")
+  public ResponseEntity<List<StereotypeVO>> getNativeRegion(
   ) {
     return ResponseEntity.ok()
         .headers(getHttpHeaders())
-        .body(stereotypeService.fetchRegions());
+        .body(stereotypeService.fetchNativeRegions());
+  }
+
+  @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, value = "/region/foreign")
+  @ApiOperation(value = "Resource responsible for providing available foreign regions")
+  public ResponseEntity<List<StereotypeVO>> getForeignRegion(
+  ) {
+    return ResponseEntity.ok()
+        .headers(getHttpHeaders())
+        .body(stereotypeService.fetchForeignRegions());
   }
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, value = "/stereotype")

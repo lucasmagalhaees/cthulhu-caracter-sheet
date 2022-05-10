@@ -1,6 +1,6 @@
 package com.lucasbarbosa.cthulhu.character.generator.service;
 
-import static com.lucasbarbosa.cthulhu.character.generator.driver.util.ApplicationUtils.shuffle;
+import static com.lucasbarbosa.cthulhu.character.generator.driver.util.ApplicationUtils.sortCollection;
 import static com.lucasbarbosa.cthulhu.character.generator.model.enums.MainCharacteristicEnum.DEXTERITY;
 import static com.lucasbarbosa.cthulhu.character.generator.model.enums.MainCharacteristicEnum.EDUCATION;
 import static com.lucasbarbosa.cthulhu.character.generator.model.enums.SkillEnum.DODGE;
@@ -17,7 +17,6 @@ import com.lucasbarbosa.cthulhu.character.generator.model.enums.StereotypeEnum;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -47,7 +46,7 @@ public interface CharacterService {
     List<AttributeVO> attributeVO = new ArrayList<>();
     List<AssignmentVO> skillAssignmentVO = translateSkillAssignment();
 
-//    assignCreditRating(attributeVO, skillAssignmentVO);
+    assignCreditRating(attributeVO);
     assignStereotypeSkills(attributeVO, stereotype, skillAssignmentVO);
 
     assignSkills(skillVO, attributeVO, skillAssignmentVO);
@@ -81,8 +80,7 @@ public interface CharacterService {
       List<AssignmentVO> skillAssignmentVO);
 
 
-  void assignCreditRating(List<AttributeVO> attributeVO,
-      List<AssignmentVO> skillAssignmentVO);
+  void assignCreditRating(List<AttributeVO> attributeVO);
 
   void assignSanity(List<AttributeVO> characteristicsVO);
 

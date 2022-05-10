@@ -10,9 +10,10 @@ public class StereotypeVO {
 
   private String name;
   private String alias;
+  private String description;
 
-  public static StereotypeVO build(String name, String alias){
-    return new StereotypeVO(name, alias);
+  public static StereotypeVO build(String name, String alias, String description){
+    return new StereotypeVO(name, alias, description);
   }
 
 }

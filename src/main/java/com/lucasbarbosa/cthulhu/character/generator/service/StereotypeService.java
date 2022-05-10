@@ -7,6 +7,7 @@ public interface StereotypeService {
 
   List<StereotypeVO> fetchStereotypes();
 
-  List<StereotypeVO> fetchRegions();
+  List<StereotypeVO> fetchNativeRegions();
+  List<StereotypeVO> fetchForeignRegions();
 
 }

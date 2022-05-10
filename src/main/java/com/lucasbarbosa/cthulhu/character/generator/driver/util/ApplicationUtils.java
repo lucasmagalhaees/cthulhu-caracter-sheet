@@ -32,10 +32,10 @@ import org.springframework.util.ObjectUtils;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ApplicationUtils {
 
-  private static final String UNDERSCORE = "_";
-  private static final String BLANK = " ";
-  private static final String COMMA = ", ";
-  private static final String ENUM_ASSURANCE_MESSAGE = "field %s must be any of %s";
+  public static final String UNDERSCORE = "_";
+  public static final String BLANK = " ";
+  public static final String COMMA = ", ";
+  public static final String ENUM_ASSURANCE_MESSAGE = "field %s must be any of %s";
 
   public static BigDecimal bigDecimalGen(Integer number) {
     return new BigDecimal(number);
@@ -84,9 +84,16 @@ public class ApplicationUtils {
     return Comparator.comparing(e -> uniqueIds.computeIfAbsent(e, k -> UUID.randomUUID()));
   }
 
+  public static <T> List<T> sortCollection(List<T> collection){
+    return collection.stream().sorted(shuffle()).collect(Collectors.toList());
+  }
+
   public static Integer calculateRandomAge() {
+    return calculateRandom(91, 15);
+  }
+  public static Integer calculateRandom(Integer max, Integer min) {
     Random random = new Random();
-    return random.nextInt(76) + 15;
+    return random.nextInt(max - min) + min;
   }
 
   public static <T extends Comparable<T>> boolean isBetween(T value, T start, T end) {
