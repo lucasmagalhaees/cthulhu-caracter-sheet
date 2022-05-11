@@ -18,8 +18,9 @@ public class RecordVO {
   private Integer build;
   private Integer bonusDamage;
   private BigDecimal magicPoints;
-  private String nativeLanguage;
-  private String foreignLanguage;
+  private PersonVO nativeLanguage;
+  private PersonVO foreignLanguage;
+  private PersonVO creditRating;
   private List<AttributeVO> charFirst;
   private List<AttributeVO> charSecond;
   private List<AttributeVO> skillFirst;

@@ -16,6 +16,7 @@ import static org.apache.commons.lang3.BooleanUtils.isFalse;
 
 import com.lucasbarbosa.cthulhu.character.generator.model.AssignmentVO;
 import com.lucasbarbosa.cthulhu.character.generator.model.AttributeVO;
+import com.lucasbarbosa.cthulhu.character.generator.model.PersonVO;
 import com.lucasbarbosa.cthulhu.character.generator.model.RecordVO;
 import com.lucasbarbosa.cthulhu.character.generator.model.SkillVO;
 import com.lucasbarbosa.cthulhu.character.generator.model.enums.CreditRatingEnum;
@@ -56,12 +57,19 @@ public class CharacterServiceImpl implements CharacterService {
   }
 
   @Override
-  public void assignCreditRating(List<AttributeVO> skillsVO) {
+  public void assignCreditRating(List<AttributeVO> skillsVO,
+      PersonVO creditRating) {
     Arrays.stream(CreditRatingEnum.values()).sorted(shuffle())
-        .findAny().ifPresent(credit ->
-            skillsVO.add(AttributeVO.buildAttribute(
-                formatAttributeName(CREDIT_RATING.name()),
-                bigDecimalGen(calculateRandom(credit.getMaxValue(), credit.getMinValue())))));
+        .findAny().ifPresent(credit -> {
+              var money = calculateRandom(credit.getMaxValue(), credit.getMinValue());
+              creditRating.setSkillName(formatAttributeName(CREDIT_RATING.name()));
+              creditRating.setDetail(formatAttributeName(credit.name()));
+              creditRating.setValue(bigDecimalGen(money));
+              skillsVO.add(AttributeVO.buildAttribute(
+                  formatAttributeName(CREDIT_RATING.name()), bigDecimalGen(money)
+              ));
+            }
+        );
 
 
   }
@@ -145,12 +153,14 @@ public class CharacterServiceImpl implements CharacterService {
   @Override
   public RecordVO buildCharacter(List<AttributeVO> characteristicsVO,
       List<AttributeVO> skillsVO, String nativeLanguageRegion,
-      String foreignLanguageRegion) {
+      String foreignLanguageRegion,
+      PersonVO creditRating) {
     return recordService.buildRecord(characteristicsVO.stream()
             .sorted(attributeComparatorFactory(AttributeVO::getMainValue))
             .collect(Collectors.toList()),
         skillsVO.stream().sorted(attributeComparatorFactory(AttributeVO::getMainValue))
-            .collect(Collectors.toList()), nativeLanguageRegion, foreignLanguageRegion);
+            .collect(Collectors.toList()), nativeLanguageRegion, foreignLanguageRegion,
+        creditRating);
   }
 
   @Override
