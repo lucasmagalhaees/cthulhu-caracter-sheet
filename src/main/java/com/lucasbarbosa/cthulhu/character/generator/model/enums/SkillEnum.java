@@ -28,7 +28,7 @@ public enum SkillEnum {
     HISTORY(5),
     INTIMIDATE(15),
     JUMP(20),
-    FOREIGN_LANGUAGE(1),
+    FOREIGN_LANGUAGE(0),
     NATIVE_LANGUAGE(0),
     LAW(5),
     LIBRARY_USE(20),

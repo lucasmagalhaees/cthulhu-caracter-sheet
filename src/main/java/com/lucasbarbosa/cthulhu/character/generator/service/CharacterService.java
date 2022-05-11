@@ -1,13 +1,17 @@
 package com.lucasbarbosa.cthulhu.character.generator.service;
 
+import static com.lucasbarbosa.cthulhu.character.generator.driver.util.ApplicationUtils.shuffle;
 import static com.lucasbarbosa.cthulhu.character.generator.driver.util.ApplicationUtils.sortCollection;
 import static com.lucasbarbosa.cthulhu.character.generator.model.enums.MainCharacteristicEnum.DEXTERITY;
 import static com.lucasbarbosa.cthulhu.character.generator.model.enums.MainCharacteristicEnum.EDUCATION;
 import static com.lucasbarbosa.cthulhu.character.generator.model.enums.SkillEnum.DODGE;
+import static com.lucasbarbosa.cthulhu.character.generator.model.enums.SkillEnum.FOREIGN_LANGUAGE;
 import static com.lucasbarbosa.cthulhu.character.generator.model.enums.SkillEnum.NATIVE_LANGUAGE;
+import static java.util.stream.Collectors.toList;
 
 import com.lucasbarbosa.cthulhu.character.generator.model.AssignmentVO;
 import com.lucasbarbosa.cthulhu.character.generator.model.AttributeVO;
+import com.lucasbarbosa.cthulhu.character.generator.model.PersonVO;
 import com.lucasbarbosa.cthulhu.character.generator.model.RecordVO;
 import com.lucasbarbosa.cthulhu.character.generator.model.SkillVO;
 import com.lucasbarbosa.cthulhu.character.generator.model.enums.CharacteristicAssignmentEnum;
@@ -32,13 +36,13 @@ public interface CharacterService {
         .map(characteristicAssignment
             -> AssignmentVO.buildAssignment(characteristicAssignment.name(),
             characteristicAssignment.getCharacteristicValue()))
-        .collect(Collectors.toList());
+        .collect(toList());
     var stereoTypeCharacteristics = StereotypeEnum.findChars(stereotype).stream().map(Enum::name)
-        .collect(Collectors.toList());
+        .collect(toList());
     assignCoreCharacterics(stereoTypeCharacteristics, attributeAssignmentVO, characteristicsVO);
     var characteristics = Arrays.stream(MainCharacteristicEnum.values()).map(Enum::name)
-        .collect(Collectors.toList());
-    assignCoreCharacterics(characteristics, attributeAssignmentVO, characteristicsVO);
+        .collect(toList());
+    assignCoreCharacterics(sortCollection(characteristics), sortCollection(attributeAssignmentVO) , characteristicsVO);
     assignLuck(characteristicsVO);
     assignSanity(characteristicsVO);
 
@@ -46,7 +50,8 @@ public interface CharacterService {
     List<AttributeVO> attributeVO = new ArrayList<>();
     List<AssignmentVO> skillAssignmentVO = translateSkillAssignment();
 
-    assignCreditRating(attributeVO);
+    var creditRating = new PersonVO();
+    assignCreditRating(attributeVO, creditRating);
     assignStereotypeSkills(attributeVO, stereotype, skillAssignmentVO);
 
     assignSkills(skillVO, attributeVO, skillAssignmentVO);
@@ -55,9 +60,11 @@ public interface CharacterService {
         AttributeVO::getHalfValue);
     buildSkillFromCharacteristic(characteristicsVO, attributeVO, NATIVE_LANGUAGE, EDUCATION,
         AttributeVO::getMainValue);
+    buildSkillFromCharacteristic(characteristicsVO, attributeVO, FOREIGN_LANGUAGE, EDUCATION,
+        AttributeVO::getHalfValue);
 
     return buildCharacter(characteristicsVO, attributeVO, nativeLanguageRegion,
-        foreignLanguageRegion);
+        foreignLanguageRegion, creditRating);
 
   }
 
@@ -69,7 +76,8 @@ public interface CharacterService {
   List<SkillVO> translateSkills();
 
   RecordVO buildCharacter(List<AttributeVO> characteristicsVO, List<AttributeVO> attributeVO,
-      String nativeLanguageRegion, String foreignLanguageRegion);
+      String nativeLanguageRegion, String foreignLanguageRegion,
+      PersonVO creditRating);
 
   void buildSkillFromCharacteristic(List<AttributeVO> characteristicsVO,
       List<AttributeVO> attributeVO, SkillEnum skillEnum,
@@ -80,7 +88,8 @@ public interface CharacterService {
       List<AssignmentVO> skillAssignmentVO);
 
 
-  void assignCreditRating(List<AttributeVO> attributeVO);
+  void assignCreditRating(List<AttributeVO> attributeVO,
+      PersonVO creditRating);
 
   void assignSanity(List<AttributeVO> characteristicsVO);
 

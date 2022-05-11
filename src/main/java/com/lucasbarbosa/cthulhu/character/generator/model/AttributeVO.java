@@ -23,9 +23,19 @@ public class AttributeVO {
     this.fifthValue = getFifthValue();
   }
 
+  private AttributeVO(BigDecimal mainValue) {
+    this.mainValue = mainValue;
+  }
+
   public static AttributeVO buildAttribute(String attributeName,
       BigDecimal mainValue) {
     return new AttributeVO(attributeName, mainValue);
+
+  }
+
+  public static AttributeVO buildByMain(
+      BigDecimal mainValue) {
+    return new AttributeVO(mainValue);
   }
 
   public String getAttributeName() {
