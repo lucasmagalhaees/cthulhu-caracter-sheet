@@ -130,6 +130,7 @@ public class CharacterServiceImpl implements CharacterService {
     var stereotypeSkills = findSkills(stereotype).stream()
         .map(skillAssignment
             -> SkillVO.buildSkill(skillAssignment.name(), skillAssignment.getInitialValue()))
+        .sorted(shuffle())
         .collect(Collectors.toList());
     assignSkills(stereotypeSkills, attributeVO, skillAssignmentVO);
   }
