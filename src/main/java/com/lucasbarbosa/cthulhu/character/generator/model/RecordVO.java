@@ -16,7 +16,7 @@ public class RecordVO {
   private Integer age;
   private Integer movementRate;
   private Integer build;
-  private Integer bonusDamage;
+  private String bonusDamage;
   private BigDecimal magicPoints;
   private PersonVO nativeLanguage;
   private PersonVO foreignLanguage;
