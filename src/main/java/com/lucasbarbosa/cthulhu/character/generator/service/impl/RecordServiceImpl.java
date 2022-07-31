@@ -22,7 +22,6 @@ import static java.math.RoundingMode.DOWN;
 import static org.apache.commons.lang3.BooleanUtils.isFalse;
 import static org.apache.commons.lang3.StringUtils.capitalize;
 
-import com.lucasbarbosa.cthulhu.character.generator.driver.util.ApplicationUtils;
 import com.lucasbarbosa.cthulhu.character.generator.model.AttributeVO;
 import com.lucasbarbosa.cthulhu.character.generator.model.LanguageVO;
 import com.lucasbarbosa.cthulhu.character.generator.model.PersonVO;
@@ -44,6 +43,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class RecordServiceImpl implements RecordService {
+
+  private static final String DICE = "D";
 
   @Override
   public void evaluateHitPoints(Map<MainCharacteristicEnum, BigDecimal> coreStats,
@@ -135,11 +136,12 @@ public class RecordServiceImpl implements RecordService {
 
     bonusDamage.ifPresent(bonus -> {
       if (TRUE.equals(bonus.getIsSigned())) {
-        recordVO.setBonusDamage(bonus.getSignedDamage());
+        recordVO.setBonusDamage(String.valueOf(bonus.getSignedDamage()));
         recordVO.setBuild(bonus.getSignedBuild());
       } else {
         recordVO.setBonusDamage(
-            ApplicationUtils.rollDice(bonus.getDieNumber(), bonus.getDieFaces()).intValue());
+            new StringBuilder().append(bonus.getDieNumber()).append(DICE)
+                .append(bonus.getDieFaces()).toString());
         recordVO.setBuild(bonus.getBuild());
       }
 
