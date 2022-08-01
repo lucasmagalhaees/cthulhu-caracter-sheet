@@ -44,7 +44,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class RecordServiceImpl implements RecordService {
 
-  private static final String DICE = "D";
+  private static final String DICE = "d";
 
   @Override
   public void evaluateHitPoints(Map<MainCharacteristicEnum, BigDecimal> coreStats,
