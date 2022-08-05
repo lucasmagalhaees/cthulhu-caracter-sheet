@@ -106,10 +106,7 @@ public class CharacterServiceImpl implements CharacterService {
       List<AttributeVO> characteristicsVO) {
 
     characteristics.forEach(attribute -> attributeAssignmentVO.stream()
-        .filter(Predicate.not(AssignmentVO::isUsed)).findAny().ifPresent(assignee -> {
-              addChar(characteristicsVO, attribute, assignee);
-
-            }
+        .filter(Predicate.not(AssignmentVO::isUsed)).findAny().ifPresent(assignee -> addChar(characteristicsVO, attribute, assignee)
         ));
   }
 

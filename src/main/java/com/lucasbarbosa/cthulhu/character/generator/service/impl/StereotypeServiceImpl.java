@@ -4,7 +4,6 @@ import static com.lucasbarbosa.cthulhu.character.generator.driver.util.Applicati
 import static com.lucasbarbosa.cthulhu.character.generator.driver.util.ApplicationUtils.formatAttributeName;
 import static com.lucasbarbosa.cthulhu.character.generator.driver.util.ApplicationUtils.joinStringListByComma;
 
-import com.lucasbarbosa.cthulhu.character.generator.driver.util.ApplicationUtils;
 import com.lucasbarbosa.cthulhu.character.generator.model.StereotypeVO;
 import com.lucasbarbosa.cthulhu.character.generator.model.enums.LanguageEnum;
 import com.lucasbarbosa.cthulhu.character.generator.model.enums.RegionEnum;
@@ -16,7 +15,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 @Service
 public class StereotypeServiceImpl implements StereotypeService {
@@ -53,12 +51,12 @@ public class StereotypeServiceImpl implements StereotypeService {
 
   private Function<RegionEnum, StereotypeVO> setUpNativeRegion() {
     return value -> StereotypeVO.build(value.toString(), formatAttributeName(value.toString()),
-       "Ex:" + BLANK + joinStringListByComma(handleNativeLanguages(value)));
+        "Ex:" + BLANK + joinStringListByComma(handleNativeLanguages(value)));
   }
 
   private Function<RegionEnum, StereotypeVO> setUpForeignRegion() {
     return value -> StereotypeVO.build(value.toString(), formatAttributeName(value.toString()),
-       "Ex:" + BLANK + joinStringListByComma(handleForeignLanguages(value)));
+        "Ex:" + BLANK + joinStringListByComma(handleForeignLanguages(value)));
   }
 
   private List<String> handleNativeLanguages(RegionEnum value) {
