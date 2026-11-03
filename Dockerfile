@@ -1,10 +1,12 @@
 # Compile and build the project
-FROM gradle:jdk11 as build-image
-RUN mkdir -p /app
-COPY . /app
+FROM gradle:7.6-jdk11 AS build-image
 WORKDIR /app
-RUN gradle --stacktrace --no-daemon clean build
+COPY . /app
+RUN gradle --no-daemon clean bootJar
 
-FROM openjdk:11
+# Run it. The platform gives the port in PORT (Vercel's container runtime, Heroku); 8080 otherwise.
+FROM eclipse-temurin:11-jre
 COPY --from=build-image /app/build/libs/cthulhu.character.generator.jar /app.jar
-ENTRYPOINT ["java", "-jar", "-Dspring.profiles.active=${PROFILE}", "app.jar"]
+ENV PROFILE=prod
+EXPOSE 8080
+ENTRYPOINT ["sh", "-c", "java -Dserver.port=${PORT:-8080} -Dspring.profiles.active=${PROFILE} -jar /app.jar"]

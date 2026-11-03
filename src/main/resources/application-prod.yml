@@ -1,8 +1,10 @@
 server:
-  port: ${PORT}
+  port: ${PORT:8080}
   servlet:
     context-path: /char-generator
 spring:
   mvc:
     pathmatch:
       matching-strategy: ant-path-matcher
+cors:
+  origins: ${CORS_ORIGINS:*}
