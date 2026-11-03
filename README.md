@@ -8,7 +8,6 @@ A Vercel não roda Java como função; este projeto sobe pelo runtime de contain
 
 1. Na Vercel: **Add New → Project**, importe este repositório. Sem framework detectado, a Vercel usa o `Dockerfile`.
 2. Variáveis de ambiente (opcionais):
-   - `CORS_ORIGINS`: domínios que podem chamar a API, separados por vírgula (padrão: qualquer um). Ex.: `https://cthulhu-front.vercel.app,https://secret-game-gamma.vercel.app`
    - `PROFILE`: perfil do Spring (padrão `prod`).
 3. O `vercel.json` força o preset de container. A Vercel manda o tráfego para a porta 80, a menos que `PORT` esteja nas variáveis do projeto; o app escuta em `PORT` (80 sem ela).
 

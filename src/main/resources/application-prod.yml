@@ -6,5 +6,3 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant-path-matcher
-cors:
-  origins: ${CORS_ORIGINS:*}
