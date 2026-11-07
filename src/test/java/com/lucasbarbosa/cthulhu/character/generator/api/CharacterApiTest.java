@@ -60,11 +60,11 @@ class CharacterApiTest {
     for (int k = 0; k < RUNS; k++) {
       var s = sheet("");
       var c = byName(s, "charFirst", "charSecond");
-      assertThat(c.keySet()).containsExactlyInAnyOrderElementsOf(
-          concat(MAIN, List.of("Luck", "Sanity")));
+      assertThat(new java.util.TreeSet<>(c.keySet())).isEqualTo(new java.util.TreeSet<>(concat(MAIN, List.of("Luck", "Sanity"))));
       List<Integer> main = new ArrayList<>();
       MAIN.forEach(n -> main.add(v(c, n)));
-      assertThat(main).containsExactlyInAnyOrderElementsOf(CHAR_VALUES);
+      main.sort(null);
+      assertThat(main).isEqualTo(CHAR_VALUES);
       assertThat(v(c, "Sanity")).isEqualTo(v(c, "Power"));
       assertThat(v(c, "Luck")).isBetween(40, 90).matches(x -> x % 5 == 0);
       assertThat(s.get("charFirst")).hasSize(5);
