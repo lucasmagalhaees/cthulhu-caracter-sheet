@@ -3,6 +3,8 @@ server:
   servlet:
     context-path: /char-generator
 spring:
+  main:
+    lazy-initialization: true   # boot faster from a cold start: beans are made on first use
   mvc:
     pathmatch:
       matching-strategy: ant-path-matcher
