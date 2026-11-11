@@ -1,3 +1,5 @@
+> **Aposentado (2026-11-11).** Este serviço foi substituído pelo [cthulhu-char-golang](https://github.com/lucasmagalhaees/cthulhu-char-golang), com as mesmas rotas e o mesmo JSON, que sobe em milissegundos em vez de ~10 s. O cthulhu-front e o Secret Cultist já usam o Go. Este repositório fica só de referência; para arquivar: Settings → General → Archive this repository.
+
 # cthulhu.character.generator
 
 Project made for randomly generating a Call of Cthulhu Character 
